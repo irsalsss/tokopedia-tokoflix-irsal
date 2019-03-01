@@ -24,6 +24,11 @@ class HomePage extends Component {
     return (
       <div className="container-card">
         <NavBar />
+        {movies && movies.map((movie) => {
+          return (            
+            <CardMovie movie={movie} key={movie.id} />
+          )}
+        )}
       </div>           
     )
   }
