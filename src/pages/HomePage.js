@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import NavBar from '../components/NavBar';
+import CardMovie from '../components/CardMovie';
 
 
 class HomePage extends Component {
