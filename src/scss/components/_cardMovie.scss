@@ -1,0 +1,41 @@
+.card {
+  border-radius: 10px;
+  margin: 20px 10px;
+  background-color: $black;
+}
+
+.top-pos {
+  margin-top: 5px;
+}
+
+.style-text {
+  letter-spacing: 5;
+  color: $white;
+  height: 44px;
+}
+
+.top-pos {
+  margin: 15px 0 15px;
+}
+
+.margin-left{
+  margin-left: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: arial;
+}
+
+.btn {
+  border-radius: 10px;
+  text-transform: none;
+  font-size: 12px;
+  hover: none;
+}
+
+.t-green{
+  background-color: #44BA43;
+}
+
+.bx-gold {
+  color: #FFD700;
+}
