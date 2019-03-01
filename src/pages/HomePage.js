@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import CardMovie from '../components/CardMovie';
 
@@ -28,7 +29,9 @@ class HomePage extends Component {
         <div className="flex-card">
         {movies && movies.map((movie) => {
           return (            
-            <CardMovie movie={movie} key={movie.id} />
+            <Link to={'/detail/' + movie.id} key={movie.id}>
+              <CardMovie movie={movie} />
+            </Link>
           )}
         )}
         </div>
