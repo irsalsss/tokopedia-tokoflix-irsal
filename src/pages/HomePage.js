@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // import component / pages
 import { fetchApi } from '../actions/apiActions';
-import NavBar from '../components/NavBar';
 import CardMovie from '../components/CardMovie';
 
 
@@ -30,7 +29,6 @@ class HomePage extends Component {
     const { movies } = this.state;
     return (
       <div className="container-card">
-        <NavBar />
         <div className="flex-card">
         {movies && movies.map((movie) => {
           return (            
