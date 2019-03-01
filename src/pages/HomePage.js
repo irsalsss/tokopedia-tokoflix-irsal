@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+// import component / pages
+import { fetchApi } from '../actions/apiActions';
 import NavBar from '../components/NavBar';
 import CardMovie from '../components/CardMovie';
 
@@ -12,13 +15,15 @@ class HomePage extends Component {
   }
 
   // get api using axios
-  componentDidMount(){
-    axios.get(`https://api.themoviedb.org/3/discover/movie?&api_key=00d559fae317a5e2c2d956106b5ad3b0&page=1&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=`)
-    .then((res) => {
-      this.setState({
-        movies: res.data.results
+  componentDidMount() {
+    // console.log(this.props);
+    this.props.fetchApi('movies')
+      .then((res) => {
+        // console.log(res);
+        this.setState({
+          movies: res.response.data.results
+        })
       })
-    })
   }
 
   render() {
@@ -40,4 +45,10 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchApi: (endpoint) => dispatch(fetchApi(endpoint))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(HomePage);
