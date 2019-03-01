@@ -25,11 +25,13 @@ class HomePage extends Component {
     return (
       <div className="container-card">
         <NavBar />
+        <div className="flex-card">
         {movies && movies.map((movie) => {
           return (            
             <CardMovie movie={movie} key={movie.id} />
           )}
         )}
+        </div>
       </div>           
     )
   }
