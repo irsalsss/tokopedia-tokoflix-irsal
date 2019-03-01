@@ -34,7 +34,7 @@ class HomePage extends Component {
         <div className="flex-card">
         {movies && movies.map((movie) => {
           return (            
-            <Link to={'/detail/' + movie.id} key={movie.id}>
+            <Link to={'/' + movie.id + '/' + movie.title} key={movie.id}>
               <CardMovie movie={movie} />
             </Link>
           )}
