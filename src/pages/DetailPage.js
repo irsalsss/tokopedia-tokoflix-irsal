@@ -1,32 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchApiDetail } from '../actions/detailApiActions';
+// import { Link } from 'react-router-dom';
 
 // import component
+import { fetchApiDetailRec } from '../actions/recApiActions';
+import { fetchApiDetail } from '../actions/detailApiActions';
 import method from '../utils/method';
 
 class DetailPage extends Component {
   state = {
-    movies: {},
-    price: ''
+    movies: [],
+    recommends: [],
+    price: '',
+    money: 100000
   }
 
   componentDidMount() {
     let id = this.props.match.params.id
     this.props.fetchApiDetail(id)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         this.setState({
           movies: res.response.data
         })
       })
+    
+      this.props.fetchApiDetailRec(id)
+        .then((res) => {
+          console.log(res);
+          this.setState({
+            recommends: res.response.data.results
+          })
+        })
   }
 
   
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     // const urlImg = 'https://image.tmdb.org/t/p/original' + this.state.movies.backdrop_path;
-    // style={{backgroundColor: 'black', height: '100vp', width: '100vp'}}
     const posterImage = 'http://image.tmdb.org/t/p/w500';
     this.price = method.checkPrice(this.state.movies.vote_average);
 
@@ -64,6 +75,21 @@ class DetailPage extends Component {
             </div>
           </div>
         </div>
+        <div className="container-rec-card">
+          <div className="title-recomm" style={{fontSize: '100px'}}>
+            Recommendation
+          </div>
+          <div className="card hoverable" style={{width: '250px', height: '550px'}}>
+            <div className="card-image">
+              <img src={posterImage + this.state.recommends.poster_path} alt={this.state.recommends.title} style={{width: '250px', heigth: '550px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
+            </div>
+            <div className="card-content">
+              <p className='style-text'>{this.state.recommends.title}</p>
+              <i className='bx bxs-star bx-gold top-pos'><span className="margin-left">{this.state.recommends.vote_average}</span></i><br />
+              <button className="btn t-green">Rp {this.price}</button>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -71,7 +97,9 @@ class DetailPage extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchApiDetail: (endpoint) => dispatch(fetchApiDetail(endpoint))
+    fetchApiDetail: (endpoint) => dispatch(fetchApiDetail(endpoint)),
+    fetchApiDetailRec: (endpoint) => dispatch(fetchApiDetailRec(endpoint))
   }
 }
+
 export default connect(null, mapDispatchToProps) (DetailPage);
