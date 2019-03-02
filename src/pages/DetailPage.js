@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchApiDetail } from '../actions/detailApiActions';
 
+// import component
+import method from '../utils/method';
+
 class DetailPage extends Component {
   state = {
-    movies: {}
+    movies: {},
+    price: ''
   }
 
   componentDidMount() {
@@ -24,6 +28,7 @@ class DetailPage extends Component {
     // const urlImg = 'https://image.tmdb.org/t/p/original' + this.state.movies.backdrop_path;
     // style={{backgroundColor: 'black', height: '100vp', width: '100vp'}}
     const posterImage = 'http://image.tmdb.org/t/p/w500';
+    this.price = method.checkPrice(this.state.movies.vote_average);
 
     return (
       <div className="container-detail-page">
@@ -40,7 +45,7 @@ class DetailPage extends Component {
                 <div className="movie-overview-bot">Running Time</div>
                 <div className="movie-tagline-bot">{this.state.movies.runtime} mins</div>
                 <div className="movie-overview-bot">Harga</div>
-                <div className="movie-tagline-bot">Rp 100.000</div>
+                <div className="movie-tagline-bot">Rp {this.price}</div>
               </div>
               <div className="float-left-bot">
                 <div className="movie-overview-bot">Rating</div>
