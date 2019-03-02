@@ -10,7 +10,7 @@ import CardMovie from '../components/CardMovie';
 class HomePage extends Component {
 
   state = {
-    movies: []
+    movies: [],
   }
 
   // get api using axios
@@ -32,7 +32,8 @@ class HomePage extends Component {
         <div className="flex-card">
         {movies && movies.map((movie) => {
           return (            
-            <Link to={'/' + movie.id + '/' + movie.title} key={movie.id}>
+            <Link to={'/' + movie.id + '/' + movie.title.replace(/\s+/g, '-')} key={movie.id}>
+            {/* <Link to={'/' + movie.id + '/' + movie.title.replace(/\s+/g, '-')} key={movie.id}> */}
               <CardMovie movie={movie} />
             </Link>
           )}
