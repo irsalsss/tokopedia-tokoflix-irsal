@@ -6,7 +6,7 @@ const detailApiReducer = (state = [], action) => {
       }
       break;
     default: 
-      return state
+      return state;
   }
 }
 
