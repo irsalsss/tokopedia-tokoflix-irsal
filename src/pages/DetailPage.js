@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // import component
 import { fetchApiDetailRec } from '../actions/recApiActions';
@@ -76,18 +76,24 @@ class DetailPage extends Component {
           </div>
         </div>
         <div className="container-rec-card">
-          <div className="title-recomm" style={{fontSize: '100px'}}>
-            Recommendation
-          </div>
-          <div className="card hoverable" style={{width: '250px', height: '550px'}}>
-            <div className="card-image">
-              <img src={posterImage + this.state.recommends.poster_path} alt={this.state.recommends.title} style={{width: '250px', heigth: '550px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
-            </div>
-            <div className="card-content">
-              <p className='style-text'>{this.state.recommends.title}</p>
-              <i className='bx bxs-star bx-gold top-pos'><span className="margin-left">{this.state.recommends.vote_average}</span></i><br />
-              <button className="btn t-green">Rp {this.price}</button>
-            </div>
+          <div style={{fontSize: '100px'}}>Recommendation</div>
+          <div className="flex-card">
+            {this.state.recommends && this.state.recommends.map((recomm) => {
+              return (
+                <Link to={'/' + recomm.id + '/' + recomm.title.replace(/\s+/g, '-')} key={recomm.id}>              
+                  <div className="card hoverable" style={{width: '250px', height: '550px'}}>
+                    <div className="card-image">
+                      <img src={posterImage + recomm.poster_path} alt={recomm.title} style={{width: '250px', heigth: '550px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
+                    </div>
+                    <div className="card-content">
+                      <p className='style-text'>{recomm.title}</p>
+                      <i className='bx bxs-star bx-gold top-pos'><span className="margin-left">{recomm.vote_average}</span></i><br />
+                      <button className="btn t-green">Rp {this.price}</button>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>
