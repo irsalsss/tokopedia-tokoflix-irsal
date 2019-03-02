@@ -33,7 +33,6 @@ class HomePage extends Component {
         {movies && movies.map((movie) => {
           return (            
             <Link to={'/' + movie.id + '/' + movie.title.replace(/\s+/g, '-')} key={movie.id}>
-            {/* <Link to={'/' + movie.id + '/' + movie.title.replace(/\s+/g, '-')} key={movie.id}> */}
               <CardMovie movie={movie} />
             </Link>
           )}

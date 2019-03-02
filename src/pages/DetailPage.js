@@ -54,7 +54,7 @@ class DetailPage extends Component {
                 <button className="btn red btn-purchase">Not Yet</button>
               </div>
               <div className="float-left-bot btn-buy">
-                <button className="btn disabled">Rp 100.000
+                <button className="btn disabled">Rp {this.state.money}
                   <i className="material-icons left">account_balance_wallet</i>
                 </button>
                 <button className="btn waves-effect waves-light mrgn" type="submit" name="action">BUY
