@@ -160,7 +160,7 @@ class DetailPage extends Component {
                 <button className="btn btn-purchase" style={{backgroundColor: `${this.state.stylePurchase}`}} >{this.state.purchase}</button>
               </div>
               <div className="float-left-bot btn-buy">
-                <button className="btn">Rp {this.state.money}
+                {}<button className="btn">Rp {this.state.money}
                   <i className="material-icons left">account_balance_wallet</i>
                 </button>
                 <button className={this.state.disable} type="submit" name="action" onClick={this.handlePurchaseMovie}>BUY
