@@ -5,12 +5,14 @@ import apiReducer from './apiReducer';
 import detailApiReducer from './detailApiReducer';
 import recApiReducer from './recApiReducer';
 import similarApiReducer from './similarApiReducer';
+import castApiReducer from './castApiReducer';
 
 const rootReducer = combineReducers({
   fetchApi: apiReducer,
   fetchDetailApi: detailApiReducer,
   fetchRecApi: recApiReducer,
-  fetchSimApi: similarApiReducer
+  fetchSimApi: similarApiReducer,
+  fetchCastApi: castApiReducer
 })
 
 export default rootReducer;
