@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // import component
+import { fetchCastApi } from '../actions/apiCast'
 import { fetchSimilarApi } from '../actions/similarApiActions';
 import { fetchApiDetailRec } from '../actions/recApiActions';
 import { fetchApiDetail } from '../actions/detailApiActions';
@@ -13,6 +14,7 @@ class DetailPage extends Component {
     movies: [],
     recommends: [],
     similars: [],
+    casts: [],
     price: '',
     money: 100000
   }
@@ -61,9 +63,18 @@ class DetailPage extends Component {
       // Get similar Api
       this.props.fetchSimApi(id)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.setState({
             similars: res.response.data.results
+          })
+        })
+
+      // Get Cast Api
+      this.props.fetchCastApi(id)
+        .then((res) => {
+          // console.log(res);
+          this.setState({
+            casts: res.response.data.cast.slice(0,3)
           })
         })
   }
@@ -84,9 +95,9 @@ class DetailPage extends Component {
             <div className="movie-tagline">{this.state.movies.tagline}</div>
             <div className="movie-overview">{this.state.movies.overview}</div>
             <div className="movie-overview-bot">Cast:</div>
-            {/* {this.state.movies.map((item) => (
-              <div className="movie-tagline-bot">{this.state.movies.credits.cast[item].name}</div>              
-            ))} */}
+            {this.state.casts.map((cast) => (
+              <div className="movie-tagline-bot block">{cast.name}</div>              
+            ))}
             <div className="container-bot">
               <div className="float-left-bot">
                 <div className="movie-overview-bot">Running Time</div>
@@ -166,7 +177,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchApiDetail: (endpoint) => dispatch(fetchApiDetail(endpoint)),
     fetchApiDetailRec: (endpoint) => dispatch(fetchApiDetailRec(endpoint)),
-    fetchSimApi: (endpoint) => dispatch(fetchSimilarApi(endpoint))
+    fetchSimApi: (endpoint) => dispatch(fetchSimilarApi(endpoint)),
+    fetchCastApi: (endpoint) => dispatch(fetchCastApi(endpoint))
   }
 }
 
