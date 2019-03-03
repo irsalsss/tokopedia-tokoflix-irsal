@@ -53,41 +53,74 @@ class DetailPage extends Component {
         })
       })
       
-      // Get recommended Api
-      this.props.fetchApiDetailRec(id)
-        .then((res) => {
-          // console.log(res);
-          this.setState({
-            recommends: res.response.data.results
-          })
+    // Get recommended Api
+    this.props.fetchApiDetailRec(id)
+      .then((res) => {
+        this.setState({
+          recommends: res.response.data.results
         })
+      })
 
-      // Get similar Api
-      this.props.fetchSimApi(id)
-        .then((res) => {
-          // console.log(res);
-          this.setState({
-            similars: res.response.data.results
-          })
+    // Get similar Api
+    this.props.fetchSimApi(id)
+      .then((res) => {
+        this.setState({
+          similars: res.response.data.results
         })
+      })
 
-      // Get Cast Api
-      this.props.fetchCastApi(id)
-        .then((res) => {
-          // console.log(res);
-          this.setState({
-            casts: res.response.data.cast.slice(0,3)
-          })
+    // Get Cast Api
+    this.props.fetchCastApi(id)
+      .then((res) => {
+        this.setState({
+          casts: res.response.data.cast.slice(0,3)
         })
-
-        // if(!localStorage.getItem('money')){
-        //   this.handlePurchaseMovie();
-        // }
+      })
   }
 
-  // componentWillUpdate(nextProps, nextState){
-  //   localStorage.setItem('wallet', JSON.stringify(nextState.money))
-  // }
+  componentDidUpdate(prevProps) {
+    if(this.props.location !== prevProps.location){
+      this.onRouteChange();
+    }
+  }
+
+  onRouteChange(){
+    let id = this.props.match.params.id;
+    console.log(id);
+
+    this.props.fetchApiDetail(id)
+      .then((res) => {
+        this.setState({
+          movies: res.response.data
+        })
+      })
+
+    // Get recommended Api
+    this.props.fetchApiDetailRec(id)
+      .then((res) => {
+        this.setState({
+          recommends: res.response.data.results
+        })
+      })
+
+    // Get similar Api
+    this.props.fetchSimApi(id)
+      .then((res) => {
+        this.setState({
+          similars: res.response.data.results
+        })
+      })
+
+    // Get Cast Api
+    this.props.fetchCastApi(id)
+      .then((res) => {
+        this.setState({
+          casts: res.response.data.cast.slice(0,3)
+        })
+      })
+
+    
+  }
 
   render() {
     // console.log(this.state);
