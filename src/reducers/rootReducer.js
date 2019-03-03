@@ -4,11 +4,13 @@ import { combineReducers } from 'redux';
 import apiReducer from './apiReducer';
 import detailApiReducer from './detailApiReducer';
 import recApiReducer from './recApiReducer';
+import similarApiReducer from './similarApiReducer';
 
 const rootReducer = combineReducers({
   fetchApi: apiReducer,
   fetchDetailApi: detailApiReducer,
-  fetchRecApi: recApiReducer
+  fetchRecApi: recApiReducer,
+  fetchSimApi: similarApiReducer
 })
 
 export default rootReducer;
