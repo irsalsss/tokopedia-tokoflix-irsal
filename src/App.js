@@ -9,6 +9,7 @@ import DetailPage from './pages/DetailPage';
 import NavBar from './components/NavBar';
 
 class App extends Component {
+
   render() {
     return (
       <BrowserRouter>
