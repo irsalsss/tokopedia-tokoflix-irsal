@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import InfiniteScroll from 'react-infinite-scroller';
-import qwest from 'qwest';
 
 // import component / pages
 import { fetchApi } from '../actions/apiActions';
 import CardMovie from '../components/CardMovie';
 
+
 class HomePage extends Component {
+  
   state = {
-    movies: []
+    movies: [],
+  }
+  
+  // get api using axios
+  componentDidMount() {
+    // console.log(this.props);
+    this.props.fetchApi()
+      .then((res) => {
+        // console.log(res);
+        this.setState({
+          movies: res.response.data.results
+        })
+      })
   }
 
   render() {
@@ -19,7 +31,7 @@ class HomePage extends Component {
     return (
       <div className="container-card">
         <div className="flex-card">
-    
+
           {movies && movies.map((movie) => {
             return (     
               <Link to={'/' + movie.id + '/' + movie.title.replace(/\s+/g, '-')} key={movie.id}>
@@ -27,7 +39,7 @@ class HomePage extends Component {
               </Link>
             )}
           )}
-  
+    
         </div>
       </div>           
     )
