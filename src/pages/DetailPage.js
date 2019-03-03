@@ -16,6 +16,9 @@ class DetailPage extends Component {
     similars: [],
     casts: [],
     price: '',
+    purchase: 'Not Yet',
+    stylePurchase: '#E50914',
+    disable: 'btn waves-effect waves-light mrgn',
     money: 100000
   }
 
@@ -35,6 +38,9 @@ class DetailPage extends Component {
         return (
           this.setState({ 
             money: curMoney,
+            purchase: 'YES',
+            stylePurchase: '#44BA43',
+            disable: 'btn waves-effect waves-light mrgn disabled',
           })
         )
       }
@@ -151,13 +157,13 @@ class DetailPage extends Component {
                 <div className="movie-overview-bot">Rating</div>
                 <div className="movie-tagline-bot">{this.state.movies.vote_average} / 10</div>
                 <div className="movie-overview-bot">Purchased</div>
-                <button className="btn red btn-purchase">Not Yet</button>
+                <button className="btn btn-purchase" style={{backgroundColor: `${this.state.stylePurchase}`}} >{this.state.purchase}</button>
               </div>
               <div className="float-left-bot btn-buy">
                 <button className="btn">Rp {this.state.money}
                   <i className="material-icons left">account_balance_wallet</i>
                 </button>
-                <button className="btn waves-effect waves-light mrgn" type="submit" name="action" onClick={this.handlePurchaseMovie}>BUY
+                <button className={this.state.disable} type="submit" name="action" onClick={this.handlePurchaseMovie}>BUY
                   <i className="material-icons left">shopping_cart </i>
                 </button>
               </div>
