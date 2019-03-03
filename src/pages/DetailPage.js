@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // import component
+import { fetchSimilarApi } from '../actions/similarApiActions';
 import { fetchApiDetailRec } from '../actions/recApiActions';
 import { fetchApiDetail } from '../actions/detailApiActions';
 import method from '../utils/method';
@@ -11,25 +12,58 @@ class DetailPage extends Component {
   state = {
     movies: [],
     recommends: [],
+    similars: [],
     price: '',
     money: 100000
   }
 
+  // reloadPage () {
+  //   this.props.history.push('/' + this.state.movies.id + '/' + this.state.movies.title.replace(/\s+/g, '-'))
+  // }
+
+  handlePurchaseMovie = (e) => {
+    e.preventDefault()
+    this.price = method.checkPrice(this.state.movies.vote_average);
+
+    if (this.state.money > this.price){
+      if (window.confirm("Do you really want to buy this movie?")){
+        return (
+          this.setState({ 
+            money: this.state.money - this.price,
+            disable: 'disable',
+          })
+        )
+      }
+    } window.alert("Your money is not enough");
+  }
+
   componentDidMount() {
     let id = this.props.match.params.id
+
+    // Get movie Api
     this.props.fetchApiDetail(id)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         this.setState({
           movies: res.response.data
         })
       })
-    
+      
+      // Get recommended Api
       this.props.fetchApiDetailRec(id)
+        .then((res) => {
+          // console.log(res);
+          this.setState({
+            recommends: res.response.data.results
+          })
+        })
+
+      // Get similar Api
+      this.props.fetchSimApi(id)
         .then((res) => {
           console.log(res);
           this.setState({
-            recommends: res.response.data.results
+            similars: res.response.data.results
           })
         })
   }
@@ -50,7 +84,9 @@ class DetailPage extends Component {
             <div className="movie-tagline">{this.state.movies.tagline}</div>
             <div className="movie-overview">{this.state.movies.overview}</div>
             <div className="movie-overview-bot">Cast:</div>
-            <div className="movie-tagline-bot">BAGIAN INI MASIH ERROR</div>
+            {/* {this.state.movies.map((item) => (
+              <div className="movie-tagline-bot">{this.state.movies.credits.cast[item].name}</div>              
+            ))} */}
             <div className="container-bot">
               <div className="float-left-bot">
                 <div className="movie-overview-bot">Running Time</div>
@@ -65,29 +101,54 @@ class DetailPage extends Component {
                 <button className="btn red btn-purchase">Not Yet</button>
               </div>
               <div className="float-left-bot btn-buy">
-                <button className="btn disabled">Rp {this.state.money}
+                <button className="btn">Rp {this.state.money}
                   <i className="material-icons left">account_balance_wallet</i>
                 </button>
-                <button className="btn waves-effect waves-light mrgn" type="submit" name="action">BUY
+                <button className="btn waves-effect waves-light mrgn" type="submit" name="action" onClick={this.handlePurchaseMovie}>BUY
                   <i className="material-icons left">shopping_cart </i>
                 </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* RECOMMENDATION SECTION */}
         <div className="container-rec-card">
-          <div style={{fontSize: '100px'}}>Recommendation</div>
+          <div style={{fontSize: '40px', color: 'white', paddingLeft: '50px', marginTop: '50px', backgroundColor: 'black',  }}>Recommended For You</div>
           <div className="flex-card">
             {this.state.recommends && this.state.recommends.map((recomm) => {
               return (
                 <Link to={'/' + recomm.id + '/' + recomm.title.replace(/\s+/g, '-')} key={recomm.id}>              
                   <div className="card hoverable" style={{width: '250px', height: '550px'}}>
-                    <div className="card-image">
-                      <img src={posterImage + recomm.poster_path} alt={recomm.title} style={{width: '250px', heigth: '550px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
+                    <div className="card-image" style={{height: '375px'}}>
+                      <img src={posterImage + recomm.poster_path} alt={recomm.title} style={{width: '250px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
                     </div>
                     <div className="card-content">
                       <p className='style-text'>{recomm.title}</p>
                       <i className='bx bxs-star bx-gold top-pos'><span className="margin-left">{recomm.vote_average}</span></i><br />
+                      <button className="btn t-green">Rp {this.price}</button>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* SIMILAR SECTION */}
+        <div className="container-rec-card">
+          <div style={{fontSize: '40px', color: 'white', paddingLeft: '50px', marginTop: '50px', backgroundColor: 'black',  }}>Similar Movies</div>
+          <div className="flex-card">
+            {this.state.similars && this.state.similars.map((similar) => {
+              return (
+                <Link to={'/' + similar.id + '/' + similar.title.replace(/\s+/g, '-')} key={similar.id}>              
+                  <div className="card hoverable" style={{width: '250px', height: '550px'}}>
+                    <div className="card-image" style={{height: '375px'}}>
+                      <img src={posterImage + similar.poster_path} alt={similar.title} style={{width: '250px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px'}} />
+                    </div>
+                    <div className="card-content">
+                      <p className='style-text'>{similar.title}</p>
+                      <i className='bx bxs-star bx-gold top-pos'><span className="margin-left">{similar.vote_average}</span></i><br />
                       <button className="btn t-green">Rp {this.price}</button>
                     </div>
                   </div>
@@ -104,7 +165,8 @@ class DetailPage extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchApiDetail: (endpoint) => dispatch(fetchApiDetail(endpoint)),
-    fetchApiDetailRec: (endpoint) => dispatch(fetchApiDetailRec(endpoint))
+    fetchApiDetailRec: (endpoint) => dispatch(fetchApiDetailRec(endpoint)),
+    fetchSimApi: (endpoint) => dispatch(fetchSimilarApi(endpoint))
   }
 }
 
