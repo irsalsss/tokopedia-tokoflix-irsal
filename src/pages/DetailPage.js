@@ -19,20 +19,22 @@ class DetailPage extends Component {
     money: 100000
   }
 
-  // reloadPage () {
-  //   this.props.history.push('/' + this.state.movies.id + '/' + this.state.movies.title.replace(/\s+/g, '-'))
-  // }
+  componentWillMount(){
+    localStorage.getItem('money') && this.setState({
+      money: JSON.parse(localStorage.getItem('money'))
+    })
+  }
 
-  handlePurchaseMovie = (e) => {
-    e.preventDefault()
+  handlePurchaseMovie = () => {
     this.price = method.checkPrice(this.state.movies.vote_average);
-
+  
     if (this.state.money > this.price){
       if (window.confirm("Do you really want to buy this movie?")){
+        let curMoney = this.state.money - this.price;
+        localStorage.setItem('money', JSON.stringify(curMoney))
         return (
           this.setState({ 
-            money: this.state.money - this.price,
-            disable: 'disable',
+            money: curMoney,
           })
         )
       }
@@ -77,9 +79,16 @@ class DetailPage extends Component {
             casts: res.response.data.cast.slice(0,3)
           })
         })
+
+        // if(!localStorage.getItem('money')){
+        //   this.handlePurchaseMovie();
+        // }
   }
 
-  
+  // componentWillUpdate(nextProps, nextState){
+  //   localStorage.setItem('wallet', JSON.stringify(nextState.money))
+  // }
+
   render() {
     // console.log(this.state);
     // const urlImg = 'https://image.tmdb.org/t/p/original' + this.state.movies.backdrop_path;
@@ -96,7 +105,7 @@ class DetailPage extends Component {
             <div className="movie-overview">{this.state.movies.overview}</div>
             <div className="movie-overview-bot">Cast:</div>
             {this.state.casts.map((cast) => (
-              <div className="movie-tagline-bot block">{cast.name}</div>              
+              <div key={cast.id} className="movie-tagline-bot block">{cast.name}</div>              
             ))}
             <div className="container-bot">
               <div className="float-left-bot">
